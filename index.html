@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#0a0a0a" />
+    <title>Music Player</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="mini-player" id="miniPlayer">
+      <img
+        id="miniCover"
+        class="mini-cover"
+        src=""
+        alt=""
+        style="display: none"
+      />
+      <div class="mini-info">
+        <div class="mini-title" id="miniTitle">Выберите трек</div>
+        <div class="mini-artist" id="miniArtist">—</div>
+      </div>
+      <div class="mini-controls">
+        <button id="miniPrev">⏮</button>
+        <button id="miniPlay">▶</button>
+        <button id="miniNext">⏭</button>
+      </div>
+      <div class="mini-progress">
+        <span id="miniCurrent">0:00</span>
+        <input type="range" id="miniSeek" min="0" max="0" value="0" />
+        <span id="miniDuration">0:00</span>
+      </div>
+    </div>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="logo">🎵 Music</div>
+        <nav>
+          <a class="nav-item active" data-page="home">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Главная</span>
+          </a>
+          <a class="nav-item" data-page="search">
+            <span class="nav-icon">🔍</span>
+            <span class="nav-label">Поиск</span>
+          </a>
+          <a class="nav-item" data-page="local">
+            <span class="nav-icon">📁</span>
+            <span class="nav-label">Мои треки</span>
+          </a>
+          <a class="nav-item" data-page="favorites">
+            <span class="nav-icon">❤️</span>
+            <span class="nav-label">Избранное</span>
+          </a>
+          <a class="nav-item" data-page="playlists">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Плейлисты</span>
+          </a>
+          <a class="nav-item" data-page="history">
+            <span class="nav-icon">🕒</span>
+            <span class="nav-label">История</span>
+          </a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <section class="page active" id="page-home">
+          <h1>🏠 Главная</h1>
+          <p class="subtitle">Добро пожаловать в Music Player</p>
+
+          <div class="home-cards">
+            <div class="home-card" data-goto="local">
+              <div class="home-card-icon">📁</div>
+              <div class="home-card-title">Мои треки</div>
+              <div class="home-card-desc">Загрузите mp3 с устройства</div>
+            </div>
+            <div class="home-card" data-goto="search">
+              <div class="home-card-icon">🔍</div>
+              <div class="home-card-title">Поиск</div>
+              <div class="home-card-desc">Ищите музыку онлайн</div>
+            </div>
+            <div class="home-card" data-goto="favorites">
+              <div class="home-card-icon">❤️</div>
+              <div class="home-card-title">Избранное</div>
+              <div class="home-card-desc">Треки, которые понравились</div>
+            </div>
+            <div class="home-card" data-goto="playlists">
+              <div class="home-card-icon">📋</div>
+              <div class="home-card-title">Плейлисты</div>
+              <div class="home-card-desc">Ваши подборки</div>
+            </div>
+          </div>
+
+          <h2 class="section-title">Недавно добавленные</h2>
+          <div id="homeRecent" class="track-list">
+            <p class="empty">
+              Пока нет треков. Загрузите первый через «Мои треки»
+            </p>
+          </div>
+        </section>
+
+        <section class="page" id="page-search">
+          <h1>🔍 Поиск</h1>
+          <p class="subtitle">Ищите музыку через Jamendo</p>
+          <div class="search-bar">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Трек, исполнитель..."
+            />
+            <button id="searchBtn" class="btn-primary">Найти</button>
+          </div>
+          <div id="searchList" class="track-list">
+            <p class="empty">Введите запрос и нажмите «Найти»</p>
+          </div>
+        </section>
+
+        <section class="page" id="page-local">
+          <div class="page-header">
+            <div>
+              <h1>📁 Мои треки</h1>
+              <p class="subtitle">Загружайте mp3 с телефона или ПК</p>
+            </div>
+            <button id="addSongsBtn" class="btn-primary">+ Добавить</button>
+          </div>
+          <input
+            type="file"
+            id="fileInput"
+            accept="audio/*"
+            multiple
+            style="display: none"
+          />
+          <p class="empty" id="localEmpty">
+            Нажмите «+ Добавить», чтобы загрузить треки
+          </p>
+          <div id="localList" class="track-list"></div>
+        </section>
+
+        <section class="page" id="page-favorites">
+          <h1>❤️ Избранное</h1>
+          <p class="subtitle">Треки, которые вам понравились</p>
+          <p class="empty" id="favoritesEmpty">
+            Пока ничего нет. Нажмите ❤️ на треке.
+          </p>
+          <div id="favoritesList" class="track-list"></div>
+        </section>
+
+        <section class="page" id="page-playlists">
+          <div class="page-header">
+            <div>
+              <h1>📋 Плейлисты</h1>
+              <p class="subtitle">Ваши подборки</p>
+            </div>
+            <button id="createPlaylistBtn" class="btn-primary">
+              + Создать
+            </button>
+          </div>
+          <p class="empty" id="playlistsEmpty">Пока нет плейлистов</p>
+          <div id="playlistsGrid" class="cards-grid"></div>
+          <div id="playlistView" style="display: none">
+            <button id="backFromPlaylist" class="btn-secondary">← Назад</button>
+            <h2 id="playlistViewName" class="section-title"></h2>
+            <div id="playlistTracksList" class="track-list"></div>
+            <p class="empty" id="playlistEmpty">В плейлисте пусто</p>
+          </div>
+        </section>
+
+        <section class="page" id="page-history">
+          <div class="page-header">
+            <div>
+              <h1>🕒 История</h1>
+              <p class="subtitle">Последние 50 прослушанных треков</p>
+            </div>
+            <button id="clearHistoryBtn" class="btn-secondary">Очистить</button>
+          </div>
+          <p class="empty" id="historyEmpty">История пуста</p>
+          <div id="historyList" class="track-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal" id="playlistModal" style="display: none">
+      <div class="modal-box">
+        <h2>Новый плейлист</h2>
+        <input
+          type="text"
+          id="playlistNameInput"
+          placeholder="Название"
+          maxlength="60"
+        />
+        <p class="error" id="playlistError"></p>
+        <button id="playlistCreateSubmit" class="btn-primary">Создать</button>
+        <button id="playlistCreateCancel" class="btn-secondary">Отмена</button>
+      </div>
+    </div>
+
+    <div class="modal" id="addToPlaylistModal" style="display: none">
+      <div class="modal-box">
+        <h2>Добавить в плейлист</h2>
+        <div id="addToPlaylistList" class="add-list"></div>
+        <button id="addToPlaylistCancel" class="btn-secondary">Отмена</button>
+      </div>
+    </div>
+
+    <audio id="audio"></audio>
+
+    <script src="app.js"></script>
+  </body>
+</html>
